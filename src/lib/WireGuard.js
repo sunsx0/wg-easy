@@ -95,7 +95,9 @@ module.exports = class WireGuard {
 [Interface]
 PrivateKey = ${config.server.privateKey}
 Address = ${config.server.address}/24
-ListenPort = 51820
+ListenPort = ${WG_PORT}
+Table = ${WG_PORT}
+FwMark = ${WG_PORT}
 PreUp = ${WG_PRE_UP}
 PostUp = ${WG_POST_UP}
 PreDown = ${WG_PRE_DOWN}
@@ -105,13 +107,14 @@ PostDown = ${WG_POST_DOWN}
     for (const [clientId, client] of Object.entries(config.clients)) {
       if (!client.enabled) continue;
 
+      let subnet = client.subnet ? client.subnet : `${client.address}/32`;
       result += `
 
 # Client: ${client.name} (${clientId})
 [Peer]
 PublicKey = ${client.publicKey}
 PresharedKey = ${client.preSharedKey}
-AllowedIPs = ${client.address}/32`;
+AllowedIPs = ${subnet}`;
     }
 
     debug('Config saving...');
@@ -138,6 +141,7 @@ AllowedIPs = ${client.address}/32`;
       enabled: client.enabled,
       address: client.address,
       publicKey: client.publicKey,
+      subnet: client.subnet,
       createdAt: new Date(client.createdAt),
       updatedAt: new Date(client.updatedAt),
       allowedIPs: client.allowedIPs,
@@ -317,5 +321,4 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
 
     await this.saveConfig();
   }
-
 };

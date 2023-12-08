@@ -18,10 +18,10 @@ services:
       # - WG_PRE_DOWN=echo "Pre Down" > /etc/wireguard/pre-down.txt
       # - WG_POST_DOWN=echo "Post Down" > /etc/wireguard/post-down.txt
       
-    image: weejewel/wg-easy
+    build: .
     container_name: wg-easy
     volumes:
-      - .:/etc/wireguard
+      - ./mounted.bin:/etc/wireguard
     ports:
       - "51820:51820/udp"
       - "51821:51821/tcp"
