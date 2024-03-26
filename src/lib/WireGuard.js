@@ -113,6 +113,7 @@ PublicKey = ${client.publicKey}
 AllowedIPs = ${subnet}`;
       if (client.endpoint) {
         result += `\nEndpoint = ${client.endpoint}`;
+        result += `\nPersistentKeepalive = ${WG_PERSISTENT_KEEPALIVE}`;
       }
       if (client.preSharedKey) {
         result += `\nPresharedKey = ${client.preSharedKey}`
