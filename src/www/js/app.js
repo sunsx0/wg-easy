@@ -40,6 +40,8 @@ new Vue({
     clientEditNameId: null,
     clientEditAddress: null,
     clientEditAddressId: null,
+    clientEditSubnet: null,
+    clientEditSubnetId: null,
     qrcode: null,
 
     currentRelease: null,

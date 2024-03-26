@@ -17,6 +17,36 @@ module.exports = class Util {
     return true;
   }
 
+  /**
+   * 
+   * @param {string} str 
+   * @returns 
+   */
+  static isValidSubnet(str) {
+    str = str.trim();
+    if (str.length === 0) return true;
+
+    const blocks = str.split(',');
+    if (blocks.length !== 1) {
+      let ok = true
+      for (let value of blocks) {
+        ok = ok && Util.isValidSubnet(value);
+      }
+      if (!ok) {
+        return false
+      }
+    } else {
+      const parts = str.split('/');
+      if (parts.length !== 2) return false;
+      const mask = parseInt(parts[1], 10);
+      if (Number.isNaN(mask)) return false;
+      if (mask < 0 || mask > 32) return false;
+      if (!Util.isValidIPv4(parts[0])) return false;
+    }
+
+    return true;
+  }
+
   static promisify(fn) {
     // eslint-disable-next-line func-names
     return function(req, res) {

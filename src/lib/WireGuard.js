@@ -248,6 +248,8 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
       throw new Error('Maximum number of clients reached.');
     }
 
+    const subnet = ''
+
     // Create Client
     const clientId = uuid.v4();
     const client = {
@@ -256,6 +258,7 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
       privateKey,
       publicKey,
       preSharedKey,
+      subnet,
 
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -314,6 +317,19 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
     }
 
     client.address = address;
+    client.updatedAt = new Date();
+
+    await this.saveConfig();
+  }
+
+  async updateClientSubnet({ clientId, subnet }) {
+    const client = await this.getClient({ clientId });
+
+    if (!Util.isValidSubnet(address)) {
+      throw new ServerError(`Invalid Subnet: ${subnet}`, 400);
+    }
+
+    client.subnet = subnet;
     client.updatedAt = new Date();
 
     await this.saveConfig();
