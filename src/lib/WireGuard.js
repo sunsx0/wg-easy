@@ -358,9 +358,10 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
   }
 
   async updateClientPreSharedKey({ clientId, preSharedKey }) {
+    preSharedKey = preSharedKey.trim()
     const client = await this.getClient({ clientId });
 
-    if (!Util.isValidKey(preSharedKey)) {
+    if (preSharedKey && !Util.isValidKey(preSharedKey)) {
       throw new ServerError(`Invalid key: ${preSharedKey}`, 400);
     }
 
