@@ -110,14 +110,10 @@ PostDown = ${WG_POST_DOWN}
 # Client: ${client.name} (${clientId})
 [Peer]
 PublicKey = ${client.publicKey}
-AllowedIPs = ${subnet}`;
+AllowedIPs = ${subnet}
+PresharedKey = ${client.preSharedKey}`;
       if (client.endpoint) {
         result += `\nEndpoint = ${client.endpoint}`;
-      }
-      if (client.preSharedKey) {
-        result += `\nPresharedKey = ${client.preSharedKey}`
-      } else {
-        result += `\nPresharedKey = ""`
       }
     }
 
