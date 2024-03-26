@@ -113,8 +113,6 @@ PublicKey = ${client.publicKey}
 AllowedIPs = ${subnet}`;
       if (client.endpoint) {
         result += `\nEndpoint = ${client.endpoint}`;
-      } else {
-        result += `\nEndpoint = ""`
       }
       if (client.preSharedKey) {
         result += `\nPresharedKey = ${client.preSharedKey}`
