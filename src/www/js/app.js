@@ -44,6 +44,10 @@ new Vue({
     clientEditSubnetId: null,
     clientEditEndpoint: null,
     clientEditEndpointId: null,
+    clientEditPublicKey: null,
+    clientEditPublicKeyId: null,
+    clientEditPreSharedKey: null,
+    clientEditPreSharedKeyId: null,
     qrcode: null,
 
     chartOptions: {
