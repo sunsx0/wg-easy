@@ -144,6 +144,16 @@ module.exports = class Server {
         const { endpoint } = req.body;
         return WireGuard.updateClientEndpoint({ clientId, endpoint });
       }))
+      .put('/api/wireguard/client/:clientId/preSharedKey', Util.promisify(async req => {
+        const { clientId } = req.params;
+        const { preSharedKey } = req.body;
+        return WireGuard.updateClientPreSharedKey({ clientId, preSharedKey });
+      }))
+      .put('/api/wireguard/client/:clientId/publicKey', Util.promisify(async req => {
+        const { clientId } = req.params;
+        const { publicKey } = req.body;
+        return WireGuard.updateClientPublicKey({ clientId, publicKey });
+      }))
 
       .listen(PORT, () => {
         debug(`Listening on http://0.0.0.0:${PORT}`);

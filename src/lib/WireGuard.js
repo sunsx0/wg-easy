@@ -356,4 +356,31 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
 
     await this.saveConfig();
   }
+
+  async updateClientPreSharedKey({ clientId, preSharedKey }) {
+    const client = await this.getClient({ clientId });
+
+    if (!Util.isValidKey(preSharedKey)) {
+      throw new ServerError(`Invalid key: ${preSharedKey}`, 400);
+    }
+
+    client.preSharedKey = preSharedKey;
+    client.updatedAt = new Date();
+
+    await this.saveConfig();
+  }
+
+  async updateClientPublicKey({ clientId, publicKey }) {
+    const client = await this.getClient({ clientId });
+
+    if (!Util.isValidKey(publicKey)) {
+      throw new ServerError(`Invalid key: ${publicKey}`, 400);
+    }
+
+    client.publicKey = publicKey;
+    client.privateKey = '';
+    client.updatedAt = new Date();
+
+    await this.saveConfig();
+  }
 };

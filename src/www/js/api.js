@@ -133,4 +133,20 @@ class API {
     });
   }
 
+  async updateClientPreSharedKey({ clientId, preSharedKey }) {
+    return this.call({
+      method: 'put',
+      path: `/wireguard/client/${clientId}/preSharedKey/`,
+      body: { preSharedKey },
+    });
+  }
+
+  async updateClientPublicKey({ clientId, publicKey }) {
+    return this.call({
+      method: 'put',
+      path: `/wireguard/client/${clientId}/publicKey/`,
+      body: { publicKey },
+    });
+  }
+
 }

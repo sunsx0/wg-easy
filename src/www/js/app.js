@@ -254,6 +254,16 @@ new Vue({
         .catch(err => alert(err.message || err.toString()))
         .finally(() => this.refresh().catch(console.error));
     },
+    updatePreSharedKey(client, preSharedKey) {
+      this.api.updatePreSharedKey({ clientId: client.id, preSharedKey })
+        .catch(err => alert(err.message || err.toString()))
+        .finally(() => this.refresh().catch(console.error));
+    },
+    updatePublicKey(client, publicKey) {
+      this.api.updatePublicKey({ clientId: client.id, publicKey })
+        .catch(err => alert(err.message || err.toString()))
+        .finally(() => this.refresh().catch(console.error));
+    },
   },
   filters: {
     bytes,

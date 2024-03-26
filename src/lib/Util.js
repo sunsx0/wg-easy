@@ -1,6 +1,7 @@
 'use strict';
 
 const childProcess = require('child_process');
+const KEY_REGEXP = /^[A-Za-z0-9+/]{42}[AEIMQUYcgkosw480]=$/
 
 module.exports = class Util {
 
@@ -54,6 +55,15 @@ module.exports = class Util {
    */
   static isValidEndpoint(str) {
     return true
+  }
+
+  /**
+   * 
+   * @param {string} str 
+   * @returns 
+   */
+  static async isValidKey(str) {
+    return KEY_REGEXP.test(str)
   }
 
   static promisify(fn) {
