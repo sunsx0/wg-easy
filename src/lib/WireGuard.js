@@ -112,6 +112,9 @@ PostDown = ${WG_POST_DOWN}
 PublicKey = ${client.publicKey}
 PresharedKey = ${client.preSharedKey}
 AllowedIPs = ${subnet}`;
+      if (client.endpoint) {
+        result += `\nEndpoint = ${client.endpoint}`;
+      }
     }
 
     debug('Config saving...');
@@ -139,6 +142,7 @@ AllowedIPs = ${subnet}`;
       address: client.address,
       publicKey: client.publicKey,
       subnet: client.subnet,
+      endpoint: client.endpoint,
       createdAt: new Date(client.createdAt),
       updatedAt: new Date(client.updatedAt),
       allowedIPs: client.allowedIPs,
@@ -249,6 +253,7 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
     }
 
     const subnet = ''
+    const endpoint = ''
 
     // Create Client
     const clientId = uuid.v4();
@@ -259,6 +264,7 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
       publicKey,
       preSharedKey,
       subnet,
+      endpoint,
 
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -330,6 +336,19 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
     }
 
     client.subnet = subnet;
+    client.updatedAt = new Date();
+
+    await this.saveConfig();
+  }
+
+  async updateClientEndpoint({ clientId, endpoint }) {
+    const client = await this.getClient({ clientId });
+
+    if (!Util.isValidEndpoint(endpoint)) {
+      throw new ServerError(`Invalid Endpoint: ${endpoint}`, 400);
+    }
+
+    client.endpoint = endpoint;
     client.updatedAt = new Date();
 
     await this.saveConfig();

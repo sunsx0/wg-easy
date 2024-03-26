@@ -139,6 +139,11 @@ module.exports = class Server {
         const { subnet } = req.body;
         return WireGuard.updateClientSubnet({ clientId, subnet });
       }))
+      .put('/api/wireguard/client/:clientId/endpoint', Util.promisify(async req => {
+        const { clientId } = req.params;
+        const { endpoint } = req.body;
+        return WireGuard.updateClientEndpoint({ clientId, endpoint });
+      }))
 
       .listen(PORT, () => {
         debug(`Listening on http://0.0.0.0:${PORT}`);

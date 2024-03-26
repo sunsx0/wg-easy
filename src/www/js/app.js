@@ -42,6 +42,8 @@ new Vue({
     clientEditAddressId: null,
     clientEditSubnet: null,
     clientEditSubnetId: null,
+    clientEditEndpoint: null,
+    clientEditEndpointId: null,
     qrcode: null,
 
     chartOptions: {
@@ -240,6 +242,11 @@ new Vue({
     },
     updateClientSubnet(client, subnet) {
       this.api.updateClientSubnet({ clientId: client.id, subnet })
+        .catch(err => alert(err.message || err.toString()))
+        .finally(() => this.refresh().catch(console.error));
+    },
+    updateClientEndpoint(client, endpoint) {
+      this.api.updateClientEndpoint({ clientId: client.id, endpoint })
         .catch(err => alert(err.message || err.toString()))
         .finally(() => this.refresh().catch(console.error));
     },

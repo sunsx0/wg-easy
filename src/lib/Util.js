@@ -47,6 +47,15 @@ module.exports = class Util {
     return true;
   }
 
+  /**
+   * TODO: Implement
+   * @param {string} str 
+   * @returns 
+   */
+  static isValidEndpoint(str) {
+    return true
+  }
+
   static promisify(fn) {
     // eslint-disable-next-line func-names
     return function(req, res) {
