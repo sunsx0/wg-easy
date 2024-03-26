@@ -117,4 +117,12 @@ class API {
     });
   }
 
+  async updateClientSubnet({ clientId, subnet }) {
+    return this.call({
+      method: 'put',
+      path: `/wireguard/client/${clientId}/subnet/`,
+      body: { subnet },
+    });
+  }
+
 }
