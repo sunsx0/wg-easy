@@ -117,4 +117,36 @@ class API {
     });
   }
 
+  async updateClientSubnet({ clientId, subnet }) {
+    return this.call({
+      method: 'put',
+      path: `/wireguard/client/${clientId}/subnet/`,
+      body: { subnet },
+    });
+  }
+
+  async updateClientEndpoint({ clientId, endpoint }) {
+    return this.call({
+      method: 'put',
+      path: `/wireguard/client/${clientId}/endpoint/`,
+      body: { endpoint },
+    });
+  }
+
+  async updateClientPreSharedKey({ clientId, preSharedKey }) {
+    return this.call({
+      method: 'put',
+      path: `/wireguard/client/${clientId}/preSharedKey/`,
+      body: { preSharedKey },
+    });
+  }
+
+  async updateClientPublicKey({ clientId, publicKey }) {
+    return this.call({
+      method: 'put',
+      path: `/wireguard/client/${clientId}/publicKey/`,
+      body: { publicKey },
+    });
+  }
+
 }

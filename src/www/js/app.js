@@ -40,10 +40,15 @@ new Vue({
     clientEditNameId: null,
     clientEditAddress: null,
     clientEditAddressId: null,
+    clientEditSubnet: null,
+    clientEditSubnetId: null,
+    clientEditEndpoint: null,
+    clientEditEndpointId: null,
+    clientEditPublicKey: null,
+    clientEditPublicKeyId: null,
+    clientEditPreSharedKey: null,
+    clientEditPreSharedKeyId: null,
     qrcode: null,
-
-    currentRelease: null,
-    latestRelease: null,
 
     chartOptions: {
       chart: {
@@ -239,6 +244,26 @@ new Vue({
         .catch(err => alert(err.message || err.toString()))
         .finally(() => this.refresh().catch(console.error));
     },
+    updateClientSubnet(client, subnet) {
+      this.api.updateClientSubnet({ clientId: client.id, subnet })
+        .catch(err => alert(err.message || err.toString()))
+        .finally(() => this.refresh().catch(console.error));
+    },
+    updateClientEndpoint(client, endpoint) {
+      this.api.updateClientEndpoint({ clientId: client.id, endpoint })
+        .catch(err => alert(err.message || err.toString()))
+        .finally(() => this.refresh().catch(console.error));
+    },
+    updateClientPreSharedKey(client, preSharedKey) {
+      this.api.updateClientPreSharedKey({ clientId: client.id, preSharedKey })
+        .catch(err => alert(err.message || err.toString()))
+        .finally(() => this.refresh().catch(console.error));
+    },
+    updateClientPublicKey(client, publicKey) {
+      this.api.updateClientPublicKey({ clientId: client.id, publicKey })
+        .catch(err => alert(err.message || err.toString()))
+        .finally(() => this.refresh().catch(console.error));
+    },
   },
   filters: {
     bytes,
@@ -267,30 +292,5 @@ new Vue({
         updateCharts: true,
       }).catch(console.error);
     }, 1000);
-
-    Promise.resolve().then(async () => {
-      const currentRelease = await this.api.getRelease();
-      const latestRelease = await fetch('https://weejewel.github.io/wg-easy/changelog.json')
-        .then(res => res.json())
-        .then(releases => {
-          const releasesArray = Object.entries(releases).map(([version, changelog]) => ({
-            version: parseInt(version, 10),
-            changelog,
-          }));
-          releasesArray.sort((a, b) => {
-            return b.version - a.version;
-          });
-
-          return releasesArray[0];
-        });
-
-      console.log(`Current Release: ${currentRelease}`);
-      console.log(`Latest Release: ${latestRelease.version}`);
-
-      if (currentRelease >= latestRelease.version) return;
-
-      this.currentRelease = currentRelease;
-      this.latestRelease = latestRelease;
-    }).catch(console.error);
   },
 });

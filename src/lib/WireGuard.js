@@ -110,8 +110,13 @@ PostDown = ${WG_POST_DOWN}
 # Client: ${client.name} (${clientId})
 [Peer]
 PublicKey = ${client.publicKey}
-PresharedKey = ${client.preSharedKey}
 AllowedIPs = ${subnet}`;
+      if (client.endpoint) {
+        result += `\nEndpoint = ${client.endpoint}`;
+      }
+      if (client.preSharedKey) {
+        result += `\nPresharedKey = ${client.preSharedKey}`
+      }
     }
 
     debug('Config saving...');
@@ -138,7 +143,9 @@ AllowedIPs = ${subnet}`;
       enabled: client.enabled,
       address: client.address,
       publicKey: client.publicKey,
+      preSharedKey: client.preSharedKey,
       subnet: client.subnet,
+      endpoint: client.endpoint,
       createdAt: new Date(client.createdAt),
       updatedAt: new Date(client.updatedAt),
       allowedIPs: client.allowedIPs,
@@ -248,6 +255,9 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
       throw new Error('Maximum number of clients reached.');
     }
 
+    const subnet = ''
+    const endpoint = ''
+
     // Create Client
     const clientId = uuid.v4();
     const client = {
@@ -256,6 +266,8 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
       privateKey,
       publicKey,
       preSharedKey,
+      subnet,
+      endpoint,
 
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -314,6 +326,60 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
     }
 
     client.address = address;
+    client.updatedAt = new Date();
+
+    await this.saveConfig();
+  }
+
+  async updateClientSubnet({ clientId, subnet }) {
+    const client = await this.getClient({ clientId });
+
+    if (!Util.isValidSubnet(subnet)) {
+      throw new ServerError(`Invalid Subnet: ${subnet}`, 400);
+    }
+
+    client.subnet = subnet;
+    client.updatedAt = new Date();
+
+    await this.saveConfig();
+  }
+
+  async updateClientEndpoint({ clientId, endpoint }) {
+    const client = await this.getClient({ clientId });
+
+    if (!Util.isValidEndpoint(endpoint)) {
+      throw new ServerError(`Invalid Endpoint: ${endpoint}`, 400);
+    }
+
+    client.endpoint = endpoint;
+    client.updatedAt = new Date();
+
+    await this.saveConfig();
+  }
+
+  async updateClientPreSharedKey({ clientId, preSharedKey }) {
+    preSharedKey = preSharedKey.trim()
+    const client = await this.getClient({ clientId });
+
+    if (preSharedKey && !Util.isValidKey(preSharedKey)) {
+      throw new ServerError(`Invalid key: ${preSharedKey}`, 400);
+    }
+
+    client.preSharedKey = preSharedKey;
+    client.updatedAt = new Date();
+
+    await this.saveConfig();
+  }
+
+  async updateClientPublicKey({ clientId, publicKey }) {
+    const client = await this.getClient({ clientId });
+
+    if (!Util.isValidKey(publicKey)) {
+      throw new ServerError(`Invalid key: ${publicKey}`, 400);
+    }
+
+    client.publicKey = publicKey;
+    client.privateKey = '';
     client.updatedAt = new Date();
 
     await this.saveConfig();
