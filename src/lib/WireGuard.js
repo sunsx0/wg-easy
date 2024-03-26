@@ -325,7 +325,7 @@ Endpoint = ${WG_HOST}:${WG_PORT}`;
   async updateClientSubnet({ clientId, subnet }) {
     const client = await this.getClient({ clientId });
 
-    if (!Util.isValidSubnet(address)) {
+    if (!Util.isValidSubnet(subnet)) {
       throw new ServerError(`Invalid Subnet: ${subnet}`, 400);
     }
 

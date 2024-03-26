@@ -44,9 +44,6 @@ new Vue({
     clientEditSubnetId: null,
     qrcode: null,
 
-    currentRelease: null,
-    latestRelease: null,
-
     chartOptions: {
       chart: {
         background: 'transparent',
@@ -274,30 +271,5 @@ new Vue({
         updateCharts: true,
       }).catch(console.error);
     }, 1000);
-
-    Promise.resolve().then(async () => {
-      const currentRelease = await this.api.getRelease();
-      const latestRelease = await fetch('https://weejewel.github.io/wg-easy/changelog.json')
-        .then(res => res.json())
-        .then(releases => {
-          const releasesArray = Object.entries(releases).map(([version, changelog]) => ({
-            version: parseInt(version, 10),
-            changelog,
-          }));
-          releasesArray.sort((a, b) => {
-            return b.version - a.version;
-          });
-
-          return releasesArray[0];
-        });
-
-      console.log(`Current Release: ${currentRelease}`);
-      console.log(`Latest Release: ${latestRelease.version}`);
-
-      if (currentRelease >= latestRelease.version) return;
-
-      this.currentRelease = currentRelease;
-      this.latestRelease = latestRelease;
-    }).catch(console.error);
   },
 });
