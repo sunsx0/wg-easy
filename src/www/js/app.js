@@ -241,6 +241,11 @@ new Vue({
         .catch(err => alert(err.message || err.toString()))
         .finally(() => this.refresh().catch(console.error));
     },
+    updateClientSubnet(client, subnet) {
+      this.api.updateClientSubnet({ clientId: client.id, subnet })
+        .catch(err => alert(err.message || err.toString()))
+        .finally(() => this.refresh().catch(console.error));
+    },
   },
   filters: {
     bytes,
